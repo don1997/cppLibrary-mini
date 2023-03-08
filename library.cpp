@@ -56,6 +56,21 @@ public:
     book_list.push_back(Book(title, author,isbn));
   }
 
+  template <typename T>
+  std::vector<Book> search(const T& query) const{
+    std::vector<Book> results;
+
+    for(const auto& book : book_list){
+      if(book.getBookTitle() == query ||
+        book.getAuthor() == query ||
+        std::to_string(book.getBookIsbn()) == query){
+          results.push_back(book);
+        }
+    }
+
+    return results;
+  }
+
   void displayBooks() const{
     std::cout << "List of books in list:\n";
     for(const auto& book : book_list){
@@ -107,6 +122,19 @@ int main(void)
     std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
   }
   my_lib.displayBooks();
+
+  std::vector<Book> searchResults = my_lib.search("Test");
+
+  if(searchResults.size() == 0){
+    std::cout << "NOT FOUND" << std::endl;
+  } 
+
+  for(const auto& book : searchResults){
+  std::cout << "FOUND"<< std::endl;
+  std::cout << "Title: " << book.getBookTitle() << "\n"
+            << "Author: " << book.getAuthor() << "\n"
+            << "ISBN: " << book.getBookIsbn() << "\n\n";
+  }
 
   return 0;
 }
